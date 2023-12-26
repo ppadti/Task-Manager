@@ -9,10 +9,11 @@ This project is a task manager application that utilizes React (TypeScript) for 
 - Delete tasks
 
 ## Technologies Used
+- Go
 - React
 - TypeScript
 - Material UI
-- Go
+
 
 ## Getting Started
 To run the project locally:
