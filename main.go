@@ -23,7 +23,8 @@ type Task struct {
 
 var tasks = make(map[int]Task)
 
-const connectionString = "mongodb+srv://pushpapadti:Rajita12345@cluster0.mg6ymn4.mongodb.net/?retryWrites=true&w=majority"
+
+const connectionString = "mongodb+srv://"
 const dbName = "tasks"
 const colname = "title"
 
