@@ -3,19 +3,14 @@ import {
   TextField,
   Button,
   List,
-  ListItem,
-  ListItemText,
-  Box,
-  ListItemSecondaryAction,
-  IconButton,
-  Paper,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import SingleTask from "./SingleTask";
+import axios from "axios";
 
 export interface Task {
   id: number;
-  name: string;
+  task: string;
 }
 
 function App() {
@@ -27,69 +22,50 @@ function App() {
   }, []);
 
   const fetchTask = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/tasks`);
-      const data = await response.json();
-      setTasks(data);
-    } catch (error) {
-      console.log("Enter fetchig tasks:", error);
-    }
+      const response = await axios.get('http://localhost:8080/tasks')
+      setTasks(response.data)
   };
+
   const handleAddTask = async () => {
-    if (name === "") return;
-    // const id = Math.random()
-    try {
-      const response = await fetch(`http://localhost:8080/tasks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name }),
-      });
-      if (response.ok) {
-        setName("");
-        // setDesc('')
-        fetchTask();
-      } else {
-        console.log("Failed to add a task", response.statusText);
-      }
-    } catch (error) {
-      console.log("Error adding a task", error);
-    }
+    if (name)  { 
+      setName('')
+      await axios
+        .post('http://localhost:8080/tasks', {
+          task: name,
+        })
+        .then((response: any) => {
+          console.log(response)
+          fetchTask()
+          // Handle data
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })}
   };
 
   const handleUpdate = async (taskId: number, newTask: string) => {
-    try {
-      const response = await fetch(`http://localhost:8080/tasks/${taskId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "appliaction/json",
-        },
-        body: JSON.stringify({ name: newTask }),
-      });
-      if (response.ok) {
-        fetchTask();
-      } else {
-        console.error("Failed to load tasks", response.statusText);
-      }
-    } catch (error) {
-      console.error("error updating task", error);
-    }
+     await axios
+      .put(`http://localhost:8080/tasks/${taskId}`, { task: newTask })
+      .then((response) => {
+        console.log(response)
+        fetchTask()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+ 
   };
 
   const handleDelete = async (taskId: number) => {
-    try {
-      const response = await fetch(`http://localhost:8080/tasks/${taskId}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        fetchTask();
-      } else {
-        console.error("Failed to load");
-      }
-    } catch (error) {
-      console.error("error deleting task", error);
-    }
+      await axios
+      .delete(`http://localhost:8080/tasks/${taskId}`)
+      .then((response) => {
+        console.log(response)
+        fetchTask()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   };
 
   return (

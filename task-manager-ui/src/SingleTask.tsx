@@ -17,7 +17,7 @@ type Props = {
 };
 
 const SingleTask = ({ task, handleUpdate, handleDelete }: Props) => {
-  const [editedName, setEditedName] = useState<string>(task.name);
+  const [editedTask, setEditedTask] = useState<string>(task.task);
   const [edit, setEdit] = useState(false);
 
   const handleCancel = () => {
@@ -26,7 +26,7 @@ const SingleTask = ({ task, handleUpdate, handleDelete }: Props) => {
 
   const handleSave = (taskId: number) => {
     setEdit(false);
-    handleUpdate(taskId, editedName);
+    handleUpdate(taskId, editedTask);
   };
 
   return (
@@ -45,9 +45,9 @@ const SingleTask = ({ task, handleUpdate, handleDelete }: Props) => {
             <TextField
               sx={{ width: "330px" }}
               label="Name"
-              value={editedName}
+              value={editedTask}
               onChange={(e) => {
-                setEditedName(e.target.value);
+                setEditedTask(e.target.value);
               }}
             />
             <Button
@@ -65,7 +65,7 @@ const SingleTask = ({ task, handleUpdate, handleDelete }: Props) => {
           </Box>
         ) : (
           <>
-            <ListItemText primary={task.name} />
+            <ListItemText primary={task.task} />
             <ListItemSecondaryAction>
               <Button
                 variant="contained"
